@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>利用flex多列的魔方呼吸效果</title>
+
+    <style>
+        body {
+            background: #ffaa01;
+        }
+        .container {
+            align-items: center;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+        }
+        .card {
+            align-content: flex-start;
+            background: #999;
+            box-shadow: 0px 0px 100px 10px rgba(0, 0, 0, .3);
+            display: flex;
+            flex-wrap: wrap;
+            flex: 0 0 360px;
+        }
+        .tile {
+            width: 120px;
+            height: 120px;
+            margin: 0;
+        }
+        .red {
+            background: #cf1d35;
+        }
+        .blue {
+            background: #40bfb6;
+        }
+        .brown {
+            background: #a07cf7;
+        }
+        .orange {
+            background: #ff7000;
+        }
+        .yellow {
+            background: #ffbe00;
+        }
+        .main {
+            animation: sonar 5s infinite;
+            background: black;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            font-family: 'Ravi Prakash', cursive;
+            line-height: 110px;
+            text-align: center;
+            text-shadow: 0px 0px #ffaa01;
+            width: 60px;
+        }
+        .main:before {
+            content: "Happy Thanksgiving!";
+        }
+        .contract {
+            box-shadow: inset 0px 0px 0px 20px rgba(0, 0, 0, .5);
+            transition: box-shadow 1s ease;
+        }
+        .expand {
+            box-shadow: none;
+            transition: box-shadow 1s ease;
+        }
+        @keyframes sonar {
+            80% {
+                text-shadow: 0px 0px #ffaa01;
+            }
+            100% {
+                text-shadow: 5px 5px black, -5px 5px black, -5px -5px black, 5px -5px black;
+            }
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+        </div>
+    </div>
+
+    <script>
+        "use strict";
+
+        var card = document.querySelector(".card");
+
+        var tiles = ["red", "blue", "brown", "yellow", "orange", "yellow", "brown", "blue", "red"];
+
+        card.childNodes.forEach(function (child, i) {
+            if (child.style && !child.className.match("main")) {
+                child.className += " " + tiles.shift();
+                tileFlow(child, i);
+            }
+        });
+
+        function tileFlow(node, time) {
+            var tilesContract = setTimeout(function () {
+                contract(node);
+            }, time * 100);
+            var tilesExpand = setTimeout(function () {
+                expand(node);
+            }, time * 100 + 1000);
+            var repeatTileFlow = setTimeout(function () {
+                tileFlow(node, time);
+            }, time * 100 + 2000);
+        }
+
+        var contract = function contract(node) {
+            node.className = node.className.replace(" expand", " contract");
+            node.className += " contract";
+        };
+
+        var expand = function expand(node) {
+            node.className = node.className.replace(" contract", " expand");
+        };
+    </script>
+
+</body>
+
+</html>
